@@ -102,7 +102,6 @@ def determine_winner(game, player_id, opponent_id, player_card, opponent_card):
 
 def war(game, player_id, opponent_id):
     if len(game["players"][player_id])<4 or len(game["players"][opponent_id])<4:
-        if len(game["players"][player_id])<4 or len(game["players"][opponent_id])<4:
         game["winner"] = None
         return
     for i in range(4):
