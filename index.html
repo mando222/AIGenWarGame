@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>War Game</title>
+</head>
+<body>
+    <div id="game-state"></div>
+    <button id="play-round-button">Play Round</button>
+</body>
+<script>
+    const { ipcRenderer } = require('electron');
+    const playRoundButton = document.getElementById('play-round-button');
+    const gameStateDiv = document.getElementById('game-state');
+
+    ipcRenderer.on('game-id', (event, gameId) => {
+        gameStateDiv.innerHTML = `Game ID: ${gameId}`;
+    });
+
+    ipcRenderer.on('game-state', (event, state) => {
+        let html = '';
+        for (const player in state.players) {
+            html += `<p>${player}: ${state.players[player].length} cards</p>`;
+        }
+        html += `<p>Pile: ${state.pile.length} cards</p>`;
+        if (state.winner) {
+            html += `<p>Winner: ${state.winner}</p>`;
+        }
+        gameStateDiv.innerHTML = html;
+    });
+
+    playRoundButton.addEventListener('click', () => {
+        ipcRenderer.send('play-round');
+    });
+</script>
+</html>
